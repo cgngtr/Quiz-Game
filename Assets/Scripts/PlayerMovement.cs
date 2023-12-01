@@ -8,11 +8,16 @@ public class PlayerMovement : MonoBehaviour
     private Rigidbody2D rb;
     [SerializeField] private float moveSpeed = 20f;
     [SerializeField] private float jumpForce = 10f;
-    private bool isGrounded;
+    [SerializeField] private float slamForce = 1f;
+    [SerializeField] private Vector2 velocity;
+    [SerializeField] private bool isGrounded;
+    [SerializeField] private bool isSlamming;
+
 
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        
     }
 
     void Update()
@@ -24,6 +29,15 @@ public class PlayerMovement : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Space) && isGrounded)
         {
             rb.velocity = Vector2.up * jumpForce;
+        }
+
+        velocity = rb.velocity;
+
+        if(!isGrounded && Input.GetKeyDown(KeyCode.S))
+        {
+            //Debug.Log("Conditions satisfied.");
+            transform.Translate(Vector3.down * slamForce);
+
         }
     }
 
@@ -37,7 +51,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void OnCollisionExit2D(Collision2D collision)
     {
-        if(collision.gameObject.CompareTag("Floor"))
+        if (collision.gameObject.CompareTag("Floor"))
         {
             isGrounded = false;
         }
