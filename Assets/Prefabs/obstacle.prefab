@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 4126271379808656272}
   - component: {fileID: 6840976945775306312}
   - component: {fileID: 2584159444355243810}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: obstacle
   m_TagString: Floor
   m_Icon: {fileID: 0}
@@ -27,9 +27,9 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4472752441039204565}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: 0.7071068, w: 0.7071068}
+  m_LocalRotation: {x: 0, y: 0, z: 0.7071068, w: 0.7071068}
   m_LocalPosition: {x: -3.7812, y: -3.8326926, z: 0}
-  m_LocalScale: {x: -0.20367056, y: 2.4892614, z: 1}
+  m_LocalScale: {x: -0.20367058, y: 2.4892614, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -144,4 +144,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentHealth: 0
-  maxHealth: 0
+  maxHealth: 3

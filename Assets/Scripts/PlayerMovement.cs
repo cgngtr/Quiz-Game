@@ -9,15 +9,19 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float moveSpeed = 20f;
     [SerializeField] private float jumpForce = 10f;
     [SerializeField] private float slamForce = 1f;
-    [SerializeField] private Vector2 velocity;
     [SerializeField] private bool isGrounded;
-    [SerializeField] private bool isSlamming;
+
+    [SerializeField] private LayerMask groundLayer;
+    [SerializeField] private float groundRadius;
+    [SerializeField] private Transform groundCheckCollider;
+
+    public bool isSlamming;
+    public bool IsSlamming => isSlamming;
 
 
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
-        
     }
 
     void Update()
@@ -31,30 +35,44 @@ public class PlayerMovement : MonoBehaviour
             rb.velocity = Vector2.up * jumpForce;
         }
 
-        velocity = rb.velocity;
 
-        if(!isGrounded && Input.GetKeyDown(KeyCode.S))
+        if(!isGrounded && Input.GetKeyDown(KeyCode.S) && !isSlamming)
         {
-            //Debug.Log("Conditions satisfied.");
-            transform.Translate(Vector3.down * slamForce);
-
+            Debug.Log("Slam coroutine started.");
+            StartCoroutine(Slam());
         }
+
+        GroundCheck();
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
+
+    private void GroundCheck()
     {
-        if(collision.gameObject.CompareTag("Floor"))
+        isGrounded = false;
+
+        Collider2D[] colliders = Physics2D.OverlapCircleAll(groundCheckCollider.position,groundRadius,groundLayer);
+        if(colliders.Length > 0)
         {
             isGrounded = true;
         }
     }
 
-    private void OnCollisionExit2D(Collision2D collision)
+    IEnumerator Slam()
     {
-        if (collision.gameObject.CompareTag("Floor"))
+        isSlamming = true;
+
+        while (!isGrounded)
         {
-            isGrounded = false;
+            transform.Translate(Vector3.down * slamForce);
+
+            yield return null;
         }
+
+        yield return new WaitForSeconds(.1f); /* update rate'den dolayi isSlamming aninda falselandiginda bariyer kirilmasi
+                                               * gerceklesmiyor. .1f gibi bir deger bekledikten sonra kapatilinca
+                                               * isSlamming degerinin true olma araligi, bariyeri kirmaya yetiyor. */
+
+        isSlamming = false;
     }
 
 }

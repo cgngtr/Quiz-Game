@@ -1,23 +1,26 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class BarrierHealth : MonoBehaviour
 {
     [SerializeField] private int currentHealth;
     [SerializeField] private int maxHealth;
-
+    private PlayerMovement _playerMovement;
 
     void Start()
     {
-        
+        _playerMovement = FindObjectOfType<PlayerMovement>();
+        if (_playerMovement == null)
+        {
+            Debug.LogError("PlayerMovement script not found!");
+        }
     }
 
     void Update()
     {
-        if(Input.GetKeyDown(KeyCode.Escape))
+        if (Input.GetKeyDown(KeyCode.Escape))
         {
-            Debug.Log("Espace is pressed.");
+            Debug.Log("Escape is pressed.");
         }
     }
 
@@ -25,17 +28,23 @@ public class BarrierHealth : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Player") && Input.GetKeyDown(KeyCode.E))
         {
-            Debug.Log("Enter");
+            // Debug.Log("Enter");
         }
     }
+
     private void OnCollisionStay2D(Collision2D collision)
     {
-        Debug.Log("CollisionStay2D: " + collision.gameObject.name);
+        // Debug.Log("CollisionStay2D: " + collision.gameObject.name);
 
-        if (collision.gameObject.CompareTag("Player") && Input.GetKey(KeyCode.E))
+        if (collision.gameObject.CompareTag("Player"))
         {
-            gameObject.SetActive(false);
-            Debug.Log("A");
+            if (_playerMovement != null && _playerMovement.IsSlamming)
+            {
+                Destroy(gameObject);
+                Debug.Log("A");
+            }
         }
     }
+
+
 }
