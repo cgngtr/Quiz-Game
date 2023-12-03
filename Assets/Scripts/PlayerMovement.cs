@@ -75,4 +75,8 @@ public class PlayerMovement : MonoBehaviour
         isSlamming = false;
     }
 
+    private void OnDrawGizmos()
+    {
+        Gizmos.DrawWireSphere(groundCheckCollider.position, groundRadius);
+    }
 }
